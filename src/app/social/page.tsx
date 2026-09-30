@@ -1,0 +1,4 @@
+import { AppShell } from "@/components/app-shell";
+import { getCurrentUser } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
+export default async function SocialPage(){const user=await getCurrentUser();if(!user)redirect("/login");return <AppShell user={user}><div className="page-heading"><span className="kicker">Social Publishing</span><h1>Social</h1><p className="muted">Manage connected accounts, schedules, queues and publication results.</p></div><div className="grid cards-3"><div className="card"><h3>Accounts</h3><p className="muted">Provider connections and permissions.</p></div><div className="card"><h3>Scheduler</h3><p className="muted">Prepare approved posts for supported channels.</p></div><div className="card"><h3>Results</h3><p className="muted">Track successful and failed publications.</p></div></div></AppShell>}
