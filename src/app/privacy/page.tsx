@@ -1,0 +1,1 @@
+import { PublicShell } from "@/components/public-site"; export default function Privacy(){return <PublicShell><main className="section container"><span className="kicker">Legal</span><h1>Privacy</h1><p className="muted">Final legal text must be reviewed and approved for the operating jurisdictions before production publication.</p></main></PublicShell>}
