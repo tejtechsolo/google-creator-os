@@ -26,13 +26,13 @@
 | 5 | Google integrations | Integration persistence for Google services | 🟡 | `Integration` model + Google callback | Service adapters remain phase work |
 | 6 | Sessions | Opaque DB-backed sessions | 🟡 | `src/lib/auth/session.ts` | Add rotation, sign-out-all, cleanup and tests |
 | 7 | Auth schema | Password, verification, reset, TOTP, recovery models | 🟡 | `prisma/schema.prisma` + auth migration | Models exist; flows still need completion |
-| 8 | Password security | Adaptive password hashing foundation | 🟡 | `src/lib/auth/password.ts` | Add policy tests and production tuning |
-| 9 | Registration | Server registration endpoint | 🟡 | `src/app/api/auth/register/route.ts` | Requires email provider + verification endpoint/tests |
-| 10 | Login | Server credential login endpoint | 🟡 | `src/app/api/auth/login/route.ts` | MFA challenge and verified-email policy remain |
-| 11 | Logout | Server logout endpoint | 🟡 | `src/app/api/auth/logout/route.ts` | Add sign-out-all |
+| 8 | Password security | Adaptive password hashing foundation | 🧪 | `src/lib/auth/password.ts` | Add policy tests and production tuning |
+| 9 | Registration | Server registration endpoint | 🧪 | `src/app/api/auth/register/route.ts` | Requires email provider + verification endpoint/tests |
+| 10 | Login | Server credential login endpoint | 🧪 | `src/app/api/auth/login/route.ts` | MFA challenge and verified-email policy remain |
+| 11 | Logout | Server logout endpoint | 🧪 | `src/app/api/auth/logout/route.ts` | Add sign-out-all |
 | 12 | Abuse controls | Initial auth attempt throttling | 🟡 | `src/lib/auth/abuse.ts` / `rate-limit.ts` | Replace in-memory controls with durable/distributed limiter before scale |
-| 13 | Email verification | Token persistence + issuance | 🟡 | `EmailVerificationToken` + register flow | Email delivery + consume endpoint/page required |
-| 14 | Password reset | Reset token persistence | 🟡 | `PasswordResetToken` | Request + consume + password-change flow required |
+| 13 | Email verification | Token persistence + issuance | 🧪 | `EmailVerificationToken` + register flow | Email delivery + consume endpoint/page required |
+| 14 | Password reset | Reset token persistence | 🧪 | `PasswordResetToken` | Request + consume + password-change flow required |
 | 15 | MFA | TOTP persistence model | 🟡 | `MfaFactor` | Enrollment, verification, challenge and step-up required |
 | 16 | Recovery | Recovery-code persistence model | 🟡 | `RecoveryCode` | Adaptive hashing + one-time use/regeneration required |
 | 17 | RBAC | Workspace roles and membership | 🔴 | Planned | Implement tenant isolation before feature data |
@@ -57,6 +57,11 @@
 ## Current milestone detail — Authentication
 
 ### Completed/foundation
+- Credential authentication server foundation implemented on the feature branch.
+- Email verification consume endpoint and password-reset request/consume endpoints added.
+- Password reset revokes all existing application sessions.
+- Email delivery adapter added for Resend via environment configuration.
+
 - Database-backed opaque sessions.
 - Authentication persistence models.
 - Password hashing utility foundation.
