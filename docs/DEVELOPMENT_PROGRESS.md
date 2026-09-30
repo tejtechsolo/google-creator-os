@@ -3,7 +3,7 @@
 > Single source-of-truth implementation tracker. Update this file after every meaningful development step. Status is based on code actually present in the repository branch, not planned work.
 
 **Repository:** `tejtechsolo/google-creator-os`  
-**Active development branch:** `feat/auth-security-hardening`  
+**Active development branch:** `feat/auth-tests-ci`  
 **Tracking started:** 2026-09-30  
 **Current milestone:** Authentication → MFA security hardening
 
@@ -49,8 +49,8 @@
 | 28 | Automation | Workflow builder + worker/jobs | 🟡 | Prisma Automation/Run/Job models | Implement queue, retries, idempotency |
 | 29 | Analytics | Cross-platform metrics | 🔴 | Planned | Search Console/Analytics first |
 | 30 | Security | Audit logging | 🟡 | `AuditLog` model | Add security event taxonomy + sensitive-action coverage |
-| 31 | Testing | Unit/integration/security/E2E | 🔴 | Planned | Every auth/security feature gets tests |
-| 32 | CI/CD | Build, lint, typecheck, security scanning | 🟡 | Repository scripts/workflow to verify | Add complete quality gates |
+| 31 | Testing | Unit/integration/security/E2E | 🧪 | `tests/`, `vitest.config.ts` | Auth unit tests and CI quality gates added; integration/E2E suites remain |
+| 32 | CI/CD | Build, lint, typecheck, security scanning | 🟡 | `.github/workflows/ci.yml` | Typecheck, unit tests and build are gated; dependency/security scanning remains |
 | 33 | Deployment | Vercel production | 🔴 | Planned | Only after release checklist |
 | 34 | Documentation | GitHub + Notion implementation documentation | 🟡 | `docs/` + Notion workbook | Update this sheet every phase |
 
