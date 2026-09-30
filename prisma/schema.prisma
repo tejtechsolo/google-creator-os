@@ -12,6 +12,7 @@ enum IntegrationService { GMAIL DRIVE PHOTOS YOUTUBE ADS CALENDAR SHEETS ANALYTI
 enum IntegrationStatus { CONNECTED DISCONNECTED ERROR REAUTH_REQUIRED }
 enum AutomationStatus { DRAFT ACTIVE PAUSED ERROR }
 enum RunStatus { QUEUED RUNNING SUCCEEDED FAILED CANCELLED }
+enum WorkspaceRole { OWNER ADMIN EDITOR SEO_ANALYST CONTENT_MANAGER VIEWER }
 
 model User {
   id String @id @default(cuid())
@@ -33,6 +34,35 @@ model User {
   automationRuns AutomationRun[]
   jobs Job[]
   auditLogs AuditLog[]
+  workspaceMemberships WorkspaceMembership[]
+  ownedWorkspaces Workspace[] @relation("WorkspaceOwner")
+}
+
+model Workspace {
+  id String @id @default(cuid())
+  name String
+  slug String @unique
+  ownerId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  owner User @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Restrict)
+  memberships WorkspaceMembership[]
+  auditLogs AuditLog[]
+  @@index([ownerId])
+}
+
+model WorkspaceMembership {
+  id String @id @default(cuid())
+  workspaceId String
+  userId String
+  role WorkspaceRole
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([workspaceId, userId])
+  @@index([userId, workspaceId])
+  @@index([workspaceId, role])
 }
 
 model PasswordCredential {
@@ -87,6 +117,7 @@ model MfaChallenge {
   id String @id @default(cuid())
   userId String
   tokenHash String @unique
+  purpose String @default("LOGIN")
   expiresAt DateTime
   usedAt DateTime?
   createdAt DateTime @default(now())
@@ -194,7 +225,10 @@ model AuditLog {
   service String?
   resourceId String?
   metadata Json?
+  workspaceId String?
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
   @@index([userId, createdAt])
+  @@index([workspaceId, createdAt])
 }
