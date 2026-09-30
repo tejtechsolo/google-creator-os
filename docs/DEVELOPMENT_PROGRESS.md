@@ -33,8 +33,8 @@
 | 12 | Abuse controls | Initial auth attempt throttling | 🟡 | `src/lib/auth/abuse.ts` / `rate-limit.ts` | Replace in-memory controls with durable/distributed limiter before scale |
 | 13 | Email verification | Token persistence + issuance | 🧪 | `EmailVerificationToken` + register flow | Email delivery + consume endpoint/page required |
 | 14 | Password reset | Reset token persistence | 🧪 | `PasswordResetToken` | Request + consume + password-change flow required |
-| 15 | MFA | TOTP persistence model | 🟡 | `MfaFactor` | Enrollment, verification, challenge and step-up required |
-| 16 | Recovery | Recovery-code persistence model | 🟡 | `RecoveryCode` | Adaptive hashing + one-time use/regeneration required |
+| 15 | MFA | TOTP persistence model | 🧪 | `MfaFactor` | Enrollment, verification, challenge and step-up required |
+| 16 | Recovery | Recovery-code persistence model | 🧪 | `RecoveryCode` | Adaptive hashing + one-time use/regeneration required |
 | 17 | RBAC | Workspace roles and membership | 🔴 | Planned | Implement tenant isolation before feature data |
 | 18 | Public website | Marketing/public route foundation | 🟡 | `src/app` public routes | Expand pages, metadata and conversion flows |
 | 19 | SEO | Sitemap + robots + security baseline | 🟡 | `src/app/sitemap.ts`, `robots.ts`, middleware | Harden CSP and add structured metadata |
@@ -57,6 +57,10 @@
 ## Current milestone detail — Authentication
 
 ### Completed/foundation
+- TOTP secret generation, authenticator URI generation and ±1 time-step verification added.
+- MFA enrollment and verification endpoints added.
+- Recovery codes generated and stored as adaptive hashes after TOTP verification.
+
 - Credential authentication server foundation implemented on the feature branch.
 - Email verification consume endpoint and password-reset request/consume endpoints added.
 - Password reset revokes all existing application sessions.
