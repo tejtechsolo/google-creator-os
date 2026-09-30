@@ -7,8 +7,11 @@ Authentication is still a development milestone. Do not treat it as production-r
 - TOTP challenge is short-lived and single-use.
 - Recovery codes are hashed and consumed once.
 - MFA login must create an authenticated session only after successful MFA.
-- TOTP secrets must be encrypted at rest before production.
-- MFA enrollment/removal should require recent re-authentication.
+- TOTP secrets are encrypted at rest with AES-256-GCM; `AUTH_ENCRYPTION_KEY` is mandatory.
+- Login MFA challenges carry an explicit `LOGIN` purpose and are atomically consumed to prevent replay races.
+- Step-up tokens are persisted server-side with an explicit `STEP_UP` purpose and a short TTL.
+- TOTP secrets created by enrollment and used by verification are encrypted/decrypted through the shared auth encryption helper.
+- MFA enrollment/removal should require recent re-authentication before those management endpoints are considered production-ready.
 - MFA verification requires durable/distributed throttling before scale.
 
 ## Sessions

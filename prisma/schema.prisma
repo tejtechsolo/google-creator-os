@@ -49,6 +49,7 @@ model EmailVerificationToken {
   id String @id @default(cuid())
   userId String
   tokenHash String @unique
+  purpose String @default("LOGIN")
   expiresAt DateTime
   usedAt DateTime?
   createdAt DateTime @default(now())
@@ -91,6 +92,7 @@ model MfaChallenge {
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   @@index([userId, expiresAt])
+  @@index([userId, purpose, expiresAt])
 }
 
 model RecoveryCode {

@@ -24,7 +24,15 @@ export async function createSession(userId: string) {
 }
 
 export async function rotateSession(userId: string) {
-  await db.session.deleteMany({ where: { userId } });
+  const store = await cookies();
+  const currentToken = store.get(COOKIE)?.value;
+
+  if (currentToken) {
+    await db.session.deleteMany({
+      where: { userId, tokenHash: hash(currentToken) },
+    });
+  }
+
   return createSession(userId);
 }
 
