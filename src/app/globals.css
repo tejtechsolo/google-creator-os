@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root { --bg:#07111f; --panel:#0d1a2b; --text:#edf4ff; --muted:#9eb0c7; --line:#20334a; --accent:#7dd3fc; }
 * { box-sizing:border-box; }
 html { scroll-behavior:smooth; }
@@ -20,3 +18,15 @@ a { color:inherit; text-decoration:none; }
 .section h2 { font-size:36px; margin:0 0 12px; }
 .kicker { color:var(--accent); font-weight:800; letter-spacing:.08em; text-transform:uppercase; font-size:12px; }
 .card label,.card input,.card textarea { display:block; width:100%; }\n.card label { margin:0 0 16px; color:var(--muted); font-size:14px; }\n.card input,.card textarea { margin-top:7px; padding:12px; border:1px solid var(--line); border-radius:10px; background:#081523; color:var(--text); }\n.footer { border-top:1px solid var(--line); padding:50px 0; margin-top:60px; color:var(--muted); }
+
+
+.app-shell{min-height:100vh;display:grid;grid-template-columns:260px 1fr;background:var(--bg)}
+.sidebar{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;gap:24px;background:#081523}
+.brand{font-weight:900;font-size:18px;padding:8px 10px}
+.sidebar-scroll{overflow:auto;display:grid;gap:22px}
+.nav-group{display:grid;gap:5px}.nav-group-title{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:0 10px 5px;font-weight:800}
+.side-link{padding:9px 10px;border-radius:9px;color:var(--muted)}.side-link:hover{background:#102238;color:var(--text)}
+.sidebar-user{margin-top:auto;border-top:1px solid var(--line);padding:16px 10px;display:grid;gap:5px;font-size:13px}.sidebar-user span{color:var(--muted);overflow:hidden;text-overflow:ellipsis}.sidebar-user a{color:var(--accent)}
+.app-main{min-width:0}.app-topbar{height:64px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 28px;color:var(--muted)}
+.app-content{max-width:1280px;margin:0 auto;padding:40px 28px}.page-heading{margin-bottom:30px}.page-heading h1{font-size:42px;letter-spacing:-.04em;margin:8px 0}.cards-3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:900px){.app-shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto;border-right:0;border-bottom:1px solid var(--line)}.sidebar-scroll{display:flex;overflow:auto}.nav-group{min-width:max-content}.sidebar-user{display:none}.app-content{padding:28px 18px}.cards-3{grid-template-columns:1fr}}
