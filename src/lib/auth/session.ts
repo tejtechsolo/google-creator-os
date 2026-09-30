@@ -38,6 +38,10 @@ export async function getCurrentUser() {
   return session.user;
 }
 
+export async function destroyAllSessions(userId: string) {
+  await db.session.deleteMany({ where: { userId } });
+}
+
 export async function destroySession() {
   const store = await cookies();
   const token = store.get(COOKIE)?.value;
