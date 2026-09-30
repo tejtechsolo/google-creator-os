@@ -6,6 +6,11 @@ import { registerSchema } from "@/lib/auth/validation";
 import { consumeAuthAttempt } from "@/lib/auth/abuse";
 import { sendVerificationEmail } from "@/lib/auth/email";
 
+function workspaceSlug(email: string) {
+  const base = email.split("@")[0].toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "workspace";
+  return `${base}-${createOpaqueToken().slice(0, 8).toLowerCase()}`;
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
   const parsed = registerSchema.safeParse(body);
@@ -19,12 +24,40 @@ export async function POST(request: NextRequest) {
   const existing = await db.user.findUnique({ where: { email }, select: { id: true } });
   if (existing) return NextResponse.json({ error: "Unable to create account with these details." }, { status: 409 });
 
-  const user = await db.user.create({
-    data: { email, name: parsed.data.name || undefined, passwordCredential: { create: { passwordHash: await hashPassword(parsed.data.password) } } },
-    select: { id: true, email: true },
+  const { user, rawToken } = await db.$transaction(async (tx) => {
+    const user = await tx.user.create({
+      data: {
+        email,
+        name: parsed.data.name || undefined,
+        passwordCredential: { create: { passwordHash: await hashPassword(parsed.data.password) } },
+      },
+      select: { id: true, email: true },
+    });
+
+    const workspace = await tx.workspace.create({
+      data: {
+        name: parsed.data.name?.trim() ? `${parsed.data.name.trim()}'s Workspace` : "My Workspace",
+        slug: workspaceSlug(email),
+        ownerId: user.id,
+      },
+    });
+
+    await tx.workspaceMembership.create({
+      data: { workspaceId: workspace.id, userId: user.id, role: "OWNER" },
+    });
+
+    const rawToken = createOpaqueToken();
+    await tx.emailVerificationToken.create({
+      data: {
+        userId: user.id,
+        tokenHash: hashOpaqueToken(rawToken),
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      },
+    });
+
+    return { user, rawToken };
   });
-  const rawToken = createOpaqueToken();
-  await db.emailVerificationToken.create({ data: { userId: user.id, tokenHash: hashOpaqueToken(rawToken), expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000) } });
+
   await sendVerificationEmail(user.email, rawToken);
   return NextResponse.json({ message: "Account created. Check your email to verify your account." }, { status: 201 });
 }
