@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth/session";
 import { db } from "@/lib/prisma";
+import { encryptSecret } from "@/lib/auth/encryption";
 import { generateTotpSecret, buildOtpAuthUri } from "@/lib/auth/totp";
 
 export async function POST() {
@@ -10,8 +11,8 @@ export async function POST() {
   const uri = buildOtpAuthUri(secret, user.email);
   await db.mfaFactor.upsert({
     where: { userId_type: { userId: user.id, type: "TOTP" } },
-    create: { userId: user.id, type: "TOTP", secretEnc: secret, label: "Authenticator app" },
-    update: { secretEnc: secret, verifiedAt: null, label: "Authenticator app" },
+    create: { userId: user.id, type: "TOTP", secretEnc: encryptSecret(secret), label: "Authenticator app" },
+    update: { secretEnc: encryptSecret(secret), verifiedAt: null, label: "Authenticator app" },
   });
   return NextResponse.json({ otpauthUri: uri, manualSecret: secret });
 }
