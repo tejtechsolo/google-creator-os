@@ -30,7 +30,6 @@ suite("workspace RBAC integration", () => {
   afterAll(async () => {
     if (workspaceId) await db.workspace.delete({ where: { id: workspaceId } });
     if (ownerId) await db.user.deleteMany({ where: { id: { in: [ownerId, memberId] } } });
-    await db.$disconnect();
   });
 
   it("denies cross-tenant access", async () => {
