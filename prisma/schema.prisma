@@ -36,6 +36,7 @@ model User {
   auditLogs AuditLog[]
   workspaceMemberships WorkspaceMembership[]
   ownedWorkspaces Workspace[] @relation("WorkspaceOwner")
+  workspaceInvitationsSent WorkspaceInvitation[] @relation("WorkspaceInvitationsSent")
 }
 
 model Workspace {
@@ -48,6 +49,7 @@ model Workspace {
   owner User @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Restrict)
   memberships WorkspaceMembership[]
   auditLogs AuditLog[]
+  invitations WorkspaceInvitation[]
   @@index([ownerId])
 }
 
@@ -231,4 +233,22 @@ model AuditLog {
   workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
   @@index([userId, createdAt])
   @@index([workspaceId, createdAt])
+}
+
+
+model WorkspaceInvitation {
+  id String @id @default(cuid())
+  workspaceId String
+  email String
+  role WorkspaceRole
+  tokenHash String @unique
+  expiresAt DateTime
+  acceptedAt DateTime?
+  invitedById String
+  createdAt DateTime @default(now())
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  invitedBy User @relation("WorkspaceInvitationsSent", fields: [invitedById], references: [id], onDelete: Cascade)
+  @@index([workspaceId, email])
+  @@index([email, expiresAt])
+  @@index([workspaceId, acceptedAt])
 }
