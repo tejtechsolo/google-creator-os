@@ -1,4 +1,3 @@
-import crypto from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/prisma";
 import { verifyPassword } from "@/lib/auth/password";
@@ -22,7 +21,7 @@ export async function POST(request: NextRequest) {
   if (mfaEnabled) {
     const challengeToken = createOpaqueToken();
     await db.mfaChallenge.create({
-      data: { userId: user.id, tokenHash: hashOpaqueToken(challengeToken), expiresAt: new Date(Date.now() + 5 * 60_000) },
+      data: { userId: user.id, tokenHash: hashOpaqueToken(challengeToken), purpose: "LOGIN", expiresAt: new Date(Date.now() + 5 * 60_000) },
     });
     return NextResponse.json({ ok: true, mfaRequired: true, challengeToken });
   }
