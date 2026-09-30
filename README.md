@@ -75,3 +75,23 @@ Google's OAuth documentation notes that applications using sensitive/restricted 
 5. Google Ads reporting and approval-based campaign actions.
 6. Webhooks/scheduled jobs, retries, idempotency and monitoring.
 7. Vercel production deployment and CI.
+
+
+## Website & Security implementation
+
+The repository now includes a reusable public-site shell and initial public routes for Home, About, Products, product detail, Solutions, Pricing, Integrations, Resources, Security, Contact, Login, Register and Password Reset.
+
+### Security implementation status
+The security architecture is documented in `docs/WEBSITE_SECURITY_GROWTH.md`. The existing Google OAuth/session foundation remains in place. Password authentication, TOTP MFA, recovery-code flows, passkeys, advanced rate limiting and the remaining security controls are implementation work items and must not be represented as production-complete until their server-side flows and tests are merged.
+
+### Engineering rules
+- Reuse shared components and domain services.
+- Keep authorization server-side.
+- Validate all external input.
+- Never commit secrets.
+- Add unit/integration/security/E2E tests with each security-sensitive feature.
+- Use provider adapters for external services.
+- Keep external publishing actions auditable and idempotent.
+- Treat traffic growth as measurement-driven optimization; never promise rankings or guaranteed traffic.
+
+See `docs/WEBSITE_SECURITY_GROWTH.md` and the Notion Complete Website, Security & Growth Workbook for the full blueprint.
