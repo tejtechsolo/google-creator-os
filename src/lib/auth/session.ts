@@ -23,6 +23,11 @@ export async function createSession(userId: string) {
   });
 }
 
+export async function rotateSession(userId: string) {
+  await db.session.deleteMany({ where: { userId } });
+  return createSession(userId);
+}
+
 export async function getCurrentUser() {
   const token = (await cookies()).get(COOKIE)?.value;
   if (!token) return null;
