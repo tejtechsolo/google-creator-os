@@ -28,7 +28,7 @@
 | 7 | Auth schema | Password, verification, reset, TOTP, recovery models | 🟡 | `prisma/schema.prisma` + auth migration | Models exist; flows still need completion |
 | 8 | Password security | Adaptive password hashing foundation | 🧪 | `src/lib/auth/password.ts` | Add policy tests and production tuning |
 | 9 | Registration | Server registration endpoint | 🧪 | `src/app/api/auth/register/route.ts` | Requires email provider + verification endpoint/tests |
-| 10 | Login | Server credential login endpoint | 🧪 | `src/app/api/auth/login/route.ts` | MFA challenge and verified-email policy remain |
+| 10 | Login | Server credential login endpoint | 🧪 | `src/app/api/auth/login/route.ts` | Email verification enforced; MFA challenge now integrated |
 | 11 | Logout | Server logout endpoint | 🧪 | `src/app/api/auth/logout/route.ts` | Add sign-out-all |
 | 12 | Abuse controls | Initial auth attempt throttling | 🟡 | `src/lib/auth/abuse.ts` / `rate-limit.ts` | Replace in-memory controls with durable/distributed limiter before scale |
 | 13 | Email verification | Token persistence + issuance | 🧪 | `EmailVerificationToken` + register flow | Email delivery + consume endpoint/page required |
