@@ -1,0 +1,4 @@
+import { AppShell } from "@/components/app-shell";
+import { getCurrentUser } from "@/lib/auth/session";
+import { redirect } from "next/navigation";
+export default async function YoutubePage(){const user=await getCurrentUser();if(!user)redirect("/login");return <AppShell user={user}><div className="page-heading"><span className="kicker">YouTube</span><h1>YouTube</h1><p className="muted">Prepare, schedule and measure videos, playlists, thumbnails and SEO metadata.</p></div><div className="grid cards-3"><div className="card"><h3>Videos</h3><p className="muted">Manage upload preparation and metadata.</p></div><div className="card"><h3>Publishing</h3><p className="muted">Schedule approved videos and playlists.</p></div><div className="card"><h3>Analytics</h3><p className="muted">Measure performance after publication.</p></div></div></AppShell>}
