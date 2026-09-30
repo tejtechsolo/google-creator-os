@@ -47,6 +47,7 @@ model Workspace {
   updatedAt DateTime @updatedAt
   owner User @relation("WorkspaceOwner", fields: [ownerId], references: [id], onDelete: Restrict)
   memberships WorkspaceMembership[]
+  auditLogs AuditLog[]
   @@index([ownerId])
 }
 
@@ -225,8 +226,9 @@ model AuditLog {
   resourceId String?
   metadata Json?
   workspaceId String?
-  @@index([userId, createdAt])
-  @@index([workspaceId, createdAt])
   createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  @@index([userId, createdAt])
+  @@index([workspaceId, createdAt])
 }
