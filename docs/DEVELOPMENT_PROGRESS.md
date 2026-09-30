@@ -57,6 +57,11 @@
 ## Current milestone detail — Authentication
 
 ### Completed/foundation
+- MFA challenge persistence and one-time challenge consumption added.
+- Login-time TOTP or one-time recovery-code verification endpoint added.
+- Step-up session primitive added with short-lived HttpOnly cookie.
+- Session rotation primitive added for authentication-level changes.
+
 - TOTP secret generation, authenticator URI generation and ±1 time-step verification added.
 - MFA enrollment and verification endpoints added.
 - Recovery codes generated and stored as adaptive hashes after TOTP verification.
