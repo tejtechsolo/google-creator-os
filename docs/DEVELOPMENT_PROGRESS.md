@@ -3,9 +3,9 @@
 > Single source-of-truth implementation tracker. Update this file after every meaningful development step. Status is based on code actually present in the repository branch, not planned work.
 
 **Repository:** `tejtechsolo/google-creator-os`  
-**Active development branch:** `feat/platform-foundation`  
+**Active development branch:** `feat/auth-security-hardening`  
 **Tracking started:** 2026-09-30  
-**Current milestone:** Authentication foundation → credential authentication hardening
+**Current milestone:** Authentication → MFA security hardening
 
 ## Status legend
 
@@ -24,7 +24,7 @@
 | 3 | Database | Prisma + PostgreSQL schema | ✅ | `prisma/schema.prisma` | Expand domain models by phase |
 | 4 | Google OAuth | Google OAuth state + callback | 🟡 | `src/app/api/auth/google/**` | Add stronger state/PKCE and verification coverage |
 | 5 | Google integrations | Integration persistence for Google services | 🟡 | `Integration` model + Google callback | Service adapters remain phase work |
-| 6 | Sessions | Opaque DB-backed sessions | 🟡 | `src/lib/auth/session.ts` | Add rotation, sign-out-all, cleanup and tests |
+| 6 | Sessions | Opaque DB-backed sessions | 🟡 | `src/lib/auth/session.ts` | Current-session rotation added; sign-out-all, cleanup and tests remain |
 | 7 | Auth schema | Password, verification, reset, TOTP, recovery models | 🟡 | `prisma/schema.prisma` + auth migration | Models exist; flows still need completion |
 | 8 | Password security | Adaptive password hashing foundation | 🧪 | `src/lib/auth/password.ts` | Add policy tests and production tuning |
 | 9 | Registration | Server registration endpoint | 🧪 | `src/app/api/auth/register/route.ts` | Requires email provider + verification endpoint/tests |
@@ -33,7 +33,7 @@
 | 12 | Abuse controls | Initial auth attempt throttling | 🟡 | `src/lib/auth/abuse.ts` / `rate-limit.ts` | Replace in-memory controls with durable/distributed limiter before scale |
 | 13 | Email verification | Token persistence + issuance | 🧪 | `EmailVerificationToken` + register flow | Email delivery + consume endpoint/page required |
 | 14 | Password reset | Reset token persistence | 🧪 | `PasswordResetToken` | Request + consume + password-change flow required |
-| 15 | MFA | TOTP persistence model | 🧪 | `MfaFactor` | Enrollment, verification, challenge and step-up required |
+| 15 | MFA | TOTP persistence model | 🧪 | `MfaFactor`, `MfaChallenge` | Encrypted TOTP secrets, explicit challenge purpose, atomic login challenge consumption and step-up persistence added; automated tests remain |
 | 16 | Recovery | Recovery-code persistence model | 🧪 | `RecoveryCode` | Adaptive hashing + one-time use/regeneration required |
 | 17 | RBAC | Workspace roles and membership | 🔴 | Planned | Implement tenant isolation before feature data |
 | 18 | Public website | Marketing/public route foundation | 🟡 | `src/app` public routes | Expand pages, metadata and conversion flows |
