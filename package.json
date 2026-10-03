@@ -11,7 +11,8 @@
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "seed:e2e": "tsx scripts/seed-e2e.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.15.0",
