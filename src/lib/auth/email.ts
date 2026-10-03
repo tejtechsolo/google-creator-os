@@ -4,7 +4,12 @@ function required(name: string) {
   return value;
 }
 
+function isE2e() {
+  return process.env.NODE_ENV === "test" && process.env.E2E_TEST_MODE === "true";
+}
+
 export async function sendVerificationEmail(to: string, token: string) {
+  if (isE2e()) return;
   const baseUrl = required("NEXT_PUBLIC_APP_URL").replace(/\/$/, "");
   const apiKey = required("RESEND_API_KEY");
   const from = required("AUTH_EMAIL_FROM");
@@ -24,6 +29,7 @@ export async function sendVerificationEmail(to: string, token: string) {
 }
 
 export async function sendPasswordResetEmail(to: string, token: string) {
+  if (isE2e()) return;
   const baseUrl = required("NEXT_PUBLIC_APP_URL").replace(/\/$/, "");
   const apiKey = required("RESEND_API_KEY");
   const from = required("AUTH_EMAIL_FROM");
@@ -42,8 +48,8 @@ export async function sendPasswordResetEmail(to: string, token: string) {
   if (!response.ok) throw new Error("Email delivery failed");
 }
 
-
 export async function sendWorkspaceInvitationEmail(to: string, token: string, workspaceName: string) {
+  if (isE2e()) return;
   const baseUrl = required("NEXT_PUBLIC_APP_URL").replace(/\/$/, "");
   const apiKey = required("RESEND_API_KEY");
   const from = required("AUTH_EMAIL_FROM");
