@@ -11,7 +11,14 @@ const password = process.env.E2E_PASSWORD ?? "E2E-Password-Change-Me-123!";
 const recoveryCodes = Array.from({ length: 10 }, (_, index) => `E2E-RECOVERY-${String(index + 1).padStart(2, "0")}`);
 
 async function main() {
-  await db.user.deleteMany({ where: { email: { in: [ownerEmail, memberEmail, outsiderEmail] } } });
+  const existingUsers = await db.user.findMany({
+    where: { email: { in: [ownerEmail, memberEmail, outsiderEmail] } },
+    select: { id: true },
+  });
+  if (existingUsers.length) {
+    await db.workspace.deleteMany({ where: { ownerId: { in: existingUsers.map((user) => user.id) } } });
+    await db.user.deleteMany({ where: { id: { in: existingUsers.map((user) => user.id) } } });
+  }
 
   const passwordHash = await hashPassword(password);
   const secretEnc = encryptSecret(generateTotpSecret());
@@ -52,7 +59,7 @@ async function main() {
   const workspace = await db.workspace.create({
     data: {
       name: "E2E Workspace",
-      slug: "e2e-workspace",
+      slug: `e2e-workspace-${Date.now()}`,
       ownerId: owner.id,
       memberships: {
         create: [
@@ -66,7 +73,7 @@ async function main() {
   const outsiderWorkspace = await db.workspace.create({
     data: {
       name: "E2E Outsider Workspace",
-      slug: "e2e-outsider-workspace",
+      slug: `e2e-outsider-workspace-${Date.now()}`,
       ownerId: outsider.id,
       memberships: { create: [{ userId: outsider.id, role: "OWNER" }] },
     },
@@ -77,6 +84,7 @@ async function main() {
     memberEmail,
     outsiderEmail,
     password,
+    memberId: member.id,
     workspaceId: workspace.id,
     outsiderWorkspaceId: outsiderWorkspace.id,
     recoveryCodes,
