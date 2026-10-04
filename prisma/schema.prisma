@@ -7,12 +7,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum IntegrationProvider { GOOGLE }
-enum IntegrationService { GMAIL DRIVE PHOTOS YOUTUBE ADS CALENDAR SHEETS ANALYTICS SEARCH_CONSOLE BUSINESS_PROFILE CONTACTS TASKS DOCS FORMS }
-enum IntegrationStatus { CONNECTED DISCONNECTED ERROR REAUTH_REQUIRED }
-enum AutomationStatus { DRAFT ACTIVE PAUSED ERROR }
-enum RunStatus { QUEUED RUNNING SUCCEEDED FAILED CANCELLED }
-enum WorkspaceRole { OWNER ADMIN EDITOR SEO_ANALYST CONTENT_MANAGER VIEWER }
+enum IntegrationProvider {
+  GOOGLE
+}
+
+enum IntegrationService {
+  GMAIL
+  DRIVE
+  PHOTOS
+  YOUTUBE
+  ADS
+  CALENDAR
+  SHEETS
+  ANALYTICS
+  SEARCH_CONSOLE
+  BUSINESS_PROFILE
+  CONTACTS
+  TASKS
+  DOCS
+  FORMS
+}
+
+enum IntegrationStatus {
+  CONNECTED
+  DISCONNECTED
+  ERROR
+  REAUTH_REQUIRED
+}
+
+enum AutomationStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  ERROR
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELLED
+}
+
+enum WorkspaceRole {
+  OWNER
+  ADMIN
+  EDITOR
+  SEO_ANALYST
+  CONTENT_MANAGER
+  VIEWER
+}
 
 model User {
   id String @id @default(cuid())
@@ -100,7 +145,9 @@ model PasswordResetToken {
   @@index([userId, expiresAt])
 }
 
-enum MfaFactorType { TOTP }
+enum MfaFactorType {
+  TOTP
+}
 
 model MfaFactor {
   id String @id @default(cuid())
@@ -234,7 +281,6 @@ model AuditLog {
   @@index([userId, createdAt])
   @@index([workspaceId, createdAt])
 }
-
 
 model WorkspaceInvitation {
   id String @id @default(cuid())
