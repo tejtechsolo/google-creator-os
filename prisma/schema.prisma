@@ -1,3 +1,4 @@
+// Prisma schema: keep enum members on separate lines for Prisma CLI compatibility.
 generator client {
   provider = "prisma-client-js"
 }
